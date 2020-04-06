@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1043513919483",
+    "firebase_url": "https://edlprojet.firebaseio.com",
+    "project_id": "edlprojet",
+    "storage_bucket": "edlprojet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043513919483:android:a04fe0a2e077d300c32d5e",
+        "android_client_info": {
+          "package_name": "com.example.untitled8"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043513919483-t7ocenidg8gue74a12dp27u99vego6d4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4DvlPu9gTL0u2c83c99HyHcMLhKgz2oA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043513919483-t7ocenidg8gue74a12dp27u99vego6d4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
