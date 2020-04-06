@@ -9,3 +9,5 @@ export 'my-widgets/myText.dart';
 export 'my-widgets/login_with.dart';
 export 'my-widgets/loading.dart';
 export 'my-widgets/loading_center.dart';
+export 'my-widgets/Bottombar.dart';
+export 'my-widgets/bar_items.dart';

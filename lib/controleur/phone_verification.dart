@@ -7,6 +7,7 @@ import 'package:untitled8/util/alert_healper.dart';
 import 'package:untitled8/util/fireHelper.dart';
 import 'package:untitled8/view/mymaterial.dart';
 import 'package:untitled8/models/user.dart';
+
 class  phoneVerification extends StatefulWidget
 {
   String uid;
@@ -52,7 +53,8 @@ setState(() {
     return Center
       (
       child : (user==null)?loading(): Scaffold(
-        appBar: AppBar(title: Text("verfication numero de telephone"),),
+
+        appBar: AppBar(title: Text((user.phone==null)?VerificationNumeroAppBar:AccueilAppBAr),),
         body: (user.phone==null)?verfier() :new maincontorler(user.uid) ,
       ));
   }

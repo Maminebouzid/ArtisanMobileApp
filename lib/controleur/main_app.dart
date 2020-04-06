@@ -16,8 +16,10 @@ class  maincontorler extends StatefulWidget
 }
 class _mainContoller extends State<maincontorler>
 {
+  GlobalKey<ScaffoldState> _globalKey=GlobalKey<ScaffoldState>();
   StreamSubscription stramListner;
   User user;
+  int index=0;
   @override
   void initState() {
     // TODO: implement initState
@@ -43,8 +45,33 @@ setState(() {
     // TODO: implement build
     return Center
       (
-      child : (user==null)?loading():Scaffold(body: Center(child: Text(user.name),),),
+      child : (user==null && user.phone!=null)?loading():
+          SafeArea(child: Scaffold(key: _globalKey,
+
+            bottomNavigationBar: BottomBar(items: <Widget>[
+              BarItems(icon: homeIcon,onPressed: (()=>(buttonSelected(0))),selected: index==0,),
+              BarItems(icon: freindsIcon,onPressed: (()=>buttonSelected(1)),selected: index==1,),
+              Container(width: 0.0,height: 0.0,),// pour le design pour le bouton de centre
+              BarItems(icon: freindsIcon,onPressed: (()=>buttonSelected(2)),selected: index==2,),
+              BarItems(icon: profileIcon,onPressed: (()=>buttonSelected(3)),selected: index==3,)
+            ],),
+            body: Center(child: Text(user.name),),
+            floatingActionButton: FloatingActionButton(onPressed: write,child: WriteICon , ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+          ),)
+
+
+
     );
   }
+  write(){
 
+  }
+buttonSelected(int index)
+{
+  setState(() {
+    this.index=index;
+  });
+}
 }
