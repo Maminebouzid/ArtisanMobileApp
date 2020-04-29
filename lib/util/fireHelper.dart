@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +8,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:untitled8/controleur/main_app.dart';
 import 'package:untitled8/util/alert_healper.dart';
 import 'package:untitled8/view/my-widgets/Constane.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:untitled8/view/my-widgets/myText.dart';
 
 class fireHelper {
   //auth with password and email
@@ -45,8 +50,15 @@ try {
      }
   }
 
-  logOut()=>auth_instance.signOut();
-
+//  logOut()=> auth_instance.signOut();
+Future logOut()async {
+    try{
+return await auth_instance.signOut();
+    }catch(e){
+e.print(" thee proble "+e.toString());
+return null;
+    }
+}
 
   // auth with google account
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -86,7 +98,7 @@ try {
         AuthResult authResult = await auth_instance.signInWithCredential(credential);
         if (authResult.additionalUserInfo.isNewUser) {
           //User logging in for the first time
-          // Redirect user to tutorial
+          // Redirect user
 
           user = (await auth_instance.signInWithCredential(credential)).user;
 
@@ -138,7 +150,49 @@ setPhone(String uid,Map<String ,dynamic> map)
   fire_user.document(uid).updateData(map);
 
 }
+//file c l image
+addPost(String uid,String text,File file)
+{
+  int date=DateTime.now().millisecondsSinceEpoch.toInt();
+  List<dynamic> likes=[];
+  List<dynamic> comments=[];
+
+  Map<String,dynamic> map={
+    KeyUid :uid,
+    KeyLikes:likes,
+    KeyCommentaire:comments,
+    KeyDate:date,
+
+  };
+  if(text!=""&&text!=null) map[Keytext]=text;
+  if(file!=null) {
+
+     StorageReference ref= storage_posts.child("uid").child(date.toString());
+    addImage(file, ref).then((finalised) {
+      String imageUrl= finalised;
+      map[KeyImageUrl]=imageUrl;
+      fire_User.document(uid).collection("posts").document().setData(map);
+    }
+    );
+  }else{
+    fire_User.document(uid).collection("posts").document().setData(map);
+  }
+}
+
+Stream <QuerySnapshot> postFrom(String uid) =>fire_User.document(uid).collection("posts").snapshots();
 
 
   //storage
+static final storage_instance=FirebaseStorage.instance.ref();
+final storage_users=storage_instance.child("Users");
+  final storage_posts=storage_instance.child("Posts");
+  Future<String> addImage(File file , StorageReference ref) async
+  {
+    StorageUploadTask task= ref.putFile(file,);
+    StorageTaskSnapshot snapshot= await task.onComplete;
+    String urlString =await snapshot.ref.getDownloadURL();
+    return urlString;
+  }
+
+
 }

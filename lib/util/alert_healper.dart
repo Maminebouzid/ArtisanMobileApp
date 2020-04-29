@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled8/util/fireHelper.dart';
 import 'package:untitled8/view/my-widgets/Constane.dart';
 import 'package:untitled8/view/my-widgets/myText.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,10 +20,45 @@ return( Theme.of(context).platform== TargetPlatform.iOS )
 
 }
 );
+   }
+  Future<void> disconnect(BuildContext context) async
+  {
+    myText title =myText("voullez-vous deconnecter ?",color: Colors.black,);
+    return showDialog(context: context,
+        barrierDismissible: false,
+        builder: (BuildContext ctx ){
+          return Theme.of(context).platform== TargetPlatform.iOS? CupertinoAlertDialog(title: title,
+            actions: <Widget>[close(ctx, "non"),disconnectbtn(ctx)
 
+            ],
+          ):
+          AlertDialog(title: title,
+              actions: <Widget>[close(ctx, "non"),disconnectbtn(ctx)
+              ]
+
+          );
+
+        }
+    );
 
   }
-FlatButton close(BuildContext ctx,String text)
+
+  FlatButton disconnectbtn(BuildContext ctx)
+  {
+    return FlatButton(onPressed:(){
+
+      Navigator.pop(ctx);
+      Navigator.pop(ctx);
+      fireHelper().logOut();
+    },child: myText("oui",color: Colors.blue,),
+
+    );
+  }
+
+
+
+
+  FlatButton close(BuildContext ctx,String text)
 {
 return FlatButton(
   onPressed: (()=>{

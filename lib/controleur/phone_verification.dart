@@ -21,7 +21,7 @@ class  phoneVerification extends StatefulWidget
 class _mainPhoneVerification extends State<phoneVerification>
 {
   StreamSubscription stramListner;
-  User user;
+
   String _phoneNumber;
   String _smsCode;
 
@@ -30,20 +30,19 @@ class _mainPhoneVerification extends State<phoneVerification>
     // TODO: implement initState
     super.initState();
     //crrer une souscription au stream,
-
+print("phone helo");
     stramListner=fireHelper().fire_User.document(widget.uid).snapshots().listen((document) {
 setState(() {
-  user=User(document);
-  print(user.phone);
-});
+  me=User(document);
+
+ });
     });
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
-
+print("phone gb");
      //arreter le stream
   stramListner.cancel();
   }
@@ -52,10 +51,10 @@ setState(() {
     // TODO: implement build
     return Center
       (
-      child : (user==null)?loading(): Scaffold(
+      child : (me==null)?loading(): Scaffold(
 
-        appBar: AppBar(title: Text((user.phone==null)?VerificationNumeroAppBar:AccueilAppBAr),),
-        body: (user.phone==null)?verfier() :new maincontorler(user.uid) ,
+        appBar: (me?.phone==null)?AppBar(title: Text(VerificationNumeroAppBar),):null,
+        body: (me?.phone==null)?verfier() :new maincontorler(me.uid) ,
       ));
   }
   FirebaseUser phoneuse;
@@ -85,7 +84,7 @@ return Column(
               onPressed: (){
                 if(_phoneNumber.contains("+213") && _phoneNumber.length==13) {
 
-                    phoneVerification(_phoneNumber,user.uid);
+                    phoneVerification(_phoneNumber,me.uid);
               }
               else{
                 alertHealper().error(context, "merci d avoir mettre un numero valide");
@@ -113,7 +112,7 @@ String verificationID;
 
 print("hola");
        setState(() {
-       user.phone=phone;
+       me.phone=phone;
      });
 fireHelper().setPhone(uid, {KeyPhone:phone});
      },
@@ -167,7 +166,7 @@ verificationID=code;
       if(myphoneuser!=null)
         setState(() {
           print("ok");
-          user.phone=_phoneNumber;
+          me.phone=_phoneNumber;
         });else{alertHealper().error(context, "merci de réessayer");
       }
      } catch (e) {

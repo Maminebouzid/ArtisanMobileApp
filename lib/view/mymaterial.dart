@@ -11,3 +11,5 @@ export 'my-widgets/loading.dart';
 export 'my-widgets/loading_center.dart';
 export 'my-widgets/Bottombar.dart';
 export 'my-widgets/bar_items.dart';
+export 'my-widgets/Bottom_gradient.dart';
+export 'my-widgets/profile_image.dart';

@@ -121,28 +121,14 @@ TextEditingController _surname;
           top: 15,bottom: 15,left: 20,right: 20,),
         paddingwith(
           top: 15.0,bottom: 15.0,
-          widget: Card(
-            elevation: 7.5,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          widget: bottonGradient(CallBack: (()=> (Signin(index==0))), text: (index ==0 )? "Se Connecter":"Créer un compte")
 
-            child: Container(
-              width: 300,height: 50,
-child: FlatButton(
-  child: myText((index ==0 )? "Se Connecter":"Créer un compte",
-      ),
-  onPressed: (){
-    Signin(index==0);
 
-  },
-
-),
-        decoration: mygradient( startcoleur: baseAccent,endcoleur: base,radius: 25.0,
-          ishorizontal: true        ),
-
-                )
-            ,
-          ),
-        )
+        ),
+        paddingwith(widget: FlatButton(
+          child: Text("Mot de passe oublié ?",style: TextStyle(color: bottomColor),),
+      onPressed: (){ alertHealper().error(context, "hhhhh");},
+        ),)
       ],
     );
   }
