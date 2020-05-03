@@ -107,7 +107,7 @@ return Column(
 String verificationID;
   Future<void> phoneVerification(String phone,String uid) async{
  fireHelper().auth_instance.verifyPhoneNumber(phoneNumber: phone,
-      timeout: Duration(seconds: 10),
+      timeout: Duration(seconds: 60),
      verificationCompleted: (AuthCredential auth) {
 
 print("hola");

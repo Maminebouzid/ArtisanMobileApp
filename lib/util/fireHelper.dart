@@ -53,6 +53,11 @@ try {
 //  logOut()=> auth_instance.signOut();
 Future logOut()async {
     try{
+      if(_googleSignIn.isSignedIn()!= null)
+
+        {
+         await _googleSignIn.signOut();
+        }
 return await auth_instance.signOut();
     }catch(e){
 e.print(" thee proble "+e.toString());
@@ -128,7 +133,8 @@ return null;
     return      user= authResult.user;
         }
       } catch (e) {
-        print(e.message);
+        /* exception happen when user clicl on sing in with google and after that dosn t complete the signing in*/
+
       }}
 
 
@@ -140,6 +146,19 @@ return null;
   //database
 static final data_instance=Firestore.instance;
 final fire_User=data_instance.collection("user");
+  ModifyUser(Map<String,dynamic> data){
+    fire_User.document(me.uid).updateData(data);
+  }
+  ModifyPicture(File file)
+  {
+    StorageReference ref=storage_users.child(me.uid);
+    addImage(file, ref).then((finalize){
+
+      Map<String,dynamic> data={KeyImageUrl:finalize};
+      ModifyUser(data);
+    });
+  
+   }
 addUser(String uid,Map<String ,dynamic> map)
 {
   fire_User.document(uid).setData(map);

@@ -56,7 +56,7 @@ setState(() {
       child : (me==null)?loading():
           SafeArea(child: Scaffold(
             key: _globalKey,
-
+              backgroundColor: white,
               endDrawer: Menu_App_Bar(),
             bottomNavigationBar: BottomBar(items: <Widget>[
               BarItems(icon: homeIcon,onPressed: (()=>(buttonSelected(0))),selected: index==0,),
@@ -127,10 +127,7 @@ Widget _createHeader()
     accountName: Text(me.name+"  " + me.surname),
 
     currentAccountPicture: CircleAvatar(
-      backgroundColor:
-      Theme.of(context).platform == TargetPlatform.iOS
-          ? Colors.blue
-          : Colors.white,
+      backgroundColor: Colors.blue,
       child: Text(
         me.name[0],
         style: TextStyle(fontSize: 40.0),
