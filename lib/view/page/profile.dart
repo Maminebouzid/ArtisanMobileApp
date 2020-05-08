@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled8/models/Post.dart';
+import 'package:untitled8/util/alert_healper.dart';
 import 'package:untitled8/util/fireHelper.dart';
 import 'package:untitled8/view/mymaterial.dart';
 import 'package:untitled8/models/user.dart';
@@ -84,7 +85,7 @@ _surname=TextEditingController()
               ),
             ),
             SliverPersistentHeader(pinned: true,
-            delegate: myHeader(user: widget.user,callback: null,scrolled: _showTitle),
+            delegate: myHeader(user: widget.user,callback: changeFields,scrolled: _showTitle),
             ),
             SliverList(delegate: SliverChildBuilderDelegate((BuildContext context,index){
               if(index== documents.length)
@@ -103,6 +104,10 @@ _surname=TextEditingController()
 
       },
     );
+  }
+  void changeFields()
+  {
+    alertHealper().changeUserAlert(context, name: _name   , surname: _surname, desc: _desc);
   }
   void changeUser()
   {
@@ -133,7 +138,7 @@ _surname=TextEditingController()
   }
   Future<void>TakePicture(ImageSource source)async
   {
-    File file=await ImagePicker.pickImage(source: source);
+    File file=await ImagePicker.pickImage(source: source, maxHeight: 500.0,maxWidth: 500.0);
     fireHelper().ModifyPicture(file);
   }
 validate()

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled8/util/alert_healper.dart';
 import 'package:untitled8/util/fireHelper.dart';
@@ -128,13 +129,12 @@ Widget _createHeader()
 
     currentAccountPicture: CircleAvatar(
       backgroundColor: Colors.blue,
-      child: Text(
-        me.name[0],
-        style: TextStyle(fontSize: 40.0),
-      ),
-    ),
+      child: profile_image(url: me.imageUrl,size: 50.0,),
 
+      ),
   );
+
+
 
 }
 }

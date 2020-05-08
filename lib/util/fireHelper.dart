@@ -10,6 +10,7 @@ import 'package:untitled8/util/alert_healper.dart';
 import 'package:untitled8/view/my-widgets/Constane.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:untitled8/view/my-widgets/myText.dart';
+import 'package:untitled8/models/user.dart';
 
 class fireHelper {
   //auth with password and email
@@ -146,6 +147,20 @@ return null;
   //database
 static final data_instance=Firestore.instance;
 final fire_User=data_instance.collection("user");
+
+
+ addFollow(User other)
+ {
+   if(me.following.contains(other.uid))
+     {
+       me.ref.updateData({KeyFollowing:FieldValue.arrayRemove([other.uid])});
+       other.ref.updateData({KeyFollowers:FieldValue.arrayRemove([me.uid])});
+     }else{
+      me.ref.updateData({KeyFollowing:FieldValue.arrayUnion([me.uid])});
+      other.ref.updateData({KeyFollowers:FieldValue.arrayUnion([me.uid])});
+   }
+ }
+
   ModifyUser(Map<String,dynamic> data){
     fire_User.document(me.uid).updateData(data);
   }
@@ -213,5 +228,6 @@ final storage_users=storage_instance.child("Users");
     return urlString;
   }
 
-
+//adminPArt
+  final fire_artist=data_instance.collection("Artisan");
 }
