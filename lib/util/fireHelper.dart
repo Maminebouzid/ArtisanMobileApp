@@ -146,11 +146,11 @@ return null;
 
   //database
 static final data_instance=Firestore.instance;
-final fire_User=data_instance.collection("user");
+final fire_User=data_instance.collection(OTHER_USERS);
 
 
  addFollow(User other)
- {
+ {print("ok");
    if(me.following.contains(other.uid))
      {
        me.ref.updateData({KeyFollowing:FieldValue.arrayRemove([other.uid])});
@@ -180,7 +180,7 @@ addUser(String uid,Map<String ,dynamic> map)
 }
 setPhone(String uid,Map<String ,dynamic> map)
 {
-  final fire_user=data_instance.collection("user");
+  final fire_user=data_instance.collection(MY_USER);
   fire_user.document(uid).updateData(map);
 
 }
@@ -229,5 +229,5 @@ final storage_users=storage_instance.child("Users");
   }
 
 //adminPArt
-  final fire_artist=data_instance.collection("Artisan");
+  final fire_artist=data_instance.collection(OTHER_USERS);
 }

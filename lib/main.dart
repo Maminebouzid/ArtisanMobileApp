@@ -14,9 +14,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
          primarySwatch: Colors.blue,
-         canvasColor: Colors.transparent,
-          primaryColor: white,
-          accentColor: baseAccent,
+           primaryColor: Colors.blue,
+          accentColor: white,
        ),
       home: _handleAuth(),
     );

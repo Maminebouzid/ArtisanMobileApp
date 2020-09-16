@@ -60,4 +60,7 @@ String VerificationNumeroAppBar="verfication numero de telephone";
 //message par defaut post
 String MessageParDefautPost="Ecrivez quelque chose";
 
-
+//nrmlUser
+String MY_USER="user";
+//Admin
+String OTHER_USERS="Artisan";

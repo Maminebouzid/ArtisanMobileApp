@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled8/util/fireHelper.dart';
+import 'package:untitled8/view/my-widgets/user_tile.dart';
 import 'package:untitled8/view/mymaterial.dart';
 import 'package:untitled8/models/user.dart';
 class userpage extends StatefulWidget
@@ -39,10 +40,7 @@ return   [  SliverAppBar(
       itemBuilder: (BuildContext ctx ,int index)
       {//change it to artisan
         User user =User(document[index]);
-        return ListTile(leading: profile_image(url: user.imageUrl,),
-          title: myText("${user.name}",color: Colors.black,),
-          trailing:  FollowButton(user: user,),
-        );
+        return  UserTile(user);
       }
   ),
 );

@@ -22,12 +22,14 @@ class _mainPhoneVerification extends State<phoneVerification>
 {
   StreamSubscription stramListner;
 
-  String _phoneNumber;
-  String _smsCode;
+  TextEditingController  _phoneNumber;
+  TextEditingController _smsCode;
 
     @override
   void initState() {
     // TODO: implement initState
+      _phoneNumber= TextEditingController();
+      _smsCode=TextEditingController();
     super.initState();
     //crrer une souscription au stream,
 print("phone helo");
@@ -55,7 +57,8 @@ print("phone gb");
 
         appBar: (me?.phone==null)?AppBar(title: Text(VerificationNumeroAppBar),):null,
         body: (me?.phone==null)?verfier() :new maincontorler(me.uid) ,
-      ));
+      )
+    );
   }
   FirebaseUser phoneuse;
 Widget verfier()
@@ -63,28 +66,33 @@ Widget verfier()
 return Column(
   children: <Widget>[
     Padding(padding: EdgeInsets.all(10.0),)    ,
-      ListTile(
-      leading: Icon(Icons.phone),
-      title: TextFormField(
-        decoration: InputDecoration(
-            labelText: "Phone Number"
-        ),
-        keyboardType: TextInputType.phone,
-        maxLength: 13,
-      initialValue: "+213",
-        onChanged: (value) => { _phoneNumber = value},
-      ),
-    ),
+
+    myTextField(controller: _phoneNumber, type: TextInputType.phone,icon: Icon(Icons.phone),hint: "met votre numero please use contry code",),
+   RaisedButton( child: Text("Submit", style: TextStyle(fontSize: 15.0, color: Colors.white),),
+     color: Color(0xFF18D191),
+     elevation: 7.0,
+   onPressed: () {
+     if(_phoneNumber.text.length==13){
+      registerPhone(_phoneNumber.text, context);
+     }
+     else
+       {
+         alertHealper().error(context, "format invalide ");
+       }
+   },)
+
+/*
     Row(
       children: <Widget>[
-        Expanded(
+
+      /*  Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
             child: RaisedButton(
               onPressed: (){
-                if(_phoneNumber.contains("+213") && _phoneNumber.length==13) {
+                if( _phoneNumber.text.length ==9) {
 
-                    phoneVerification(_phoneNumber,me.uid);
+                    phoneVerification(_phoneNumber.text,me.uid);
               }
               else{
                 alertHealper().error(context, "merci d avoir mettre un numero valide");
@@ -96,16 +104,16 @@ return Column(
               elevation: 7.0,
             ),
           ),
-        ),
+        ),*/
       ],
-    )
+    )*/
   ],
 );
 
 }
 
-String verificationID;
-  Future<void> phoneVerification(String phone,String uid) async{
+String verificationcode;
+  /*Future<void> phoneVerification(String phone,String uid) async{
  fireHelper().auth_instance.verifyPhoneNumber(phoneNumber: phone,
       timeout: Duration(seconds: 60),
      verificationCompleted: (AuthCredential auth) {
@@ -136,7 +144,7 @@ verificationID=code;
             title: Text("Enter Code"),
             content: TextField(
               onChanged: (value) {
-                this._smsCode = value;
+                this._smsCode.text = value;
               },
             ),
             contentPadding: EdgeInsets.all(10.0),
@@ -160,19 +168,75 @@ verificationID=code;
     try {
       final AuthCredential credential = PhoneAuthProvider.getCredential(
         verificationId: verificationID,
-        smsCode: _smsCode,
+        smsCode: _smsCode.text,
       );
       final AuthResult myphoneuser = await fireHelper().auth_instance.signInWithCredential(credential);
       if(myphoneuser!=null)
         setState(() {
           print("ok");
-          me.phone=_phoneNumber;
+          me.phone=_phoneNumber.text;
         });else{alertHealper().error(context, "merci de réessayer");
       }
      } catch (e) {
       alertHealper()..error(context, e);
     }
   }
+*/
+  Future registerPhone(String num ,BuildContext context)async{
 
+    fireHelper().auth_instance.verifyPhoneNumber(phoneNumber: _phoneNumber.text,
+        timeout:  const Duration(seconds: 60),
+        verificationCompleted: ( credential){
+          setState(() {
+            me.phone=_phoneNumber.text;
+            fireHelper().ModifyUser({KeyPhone:_phoneNumber.text});
+          });
 
+        },
+        verificationFailed: (exception){
+          alertHealper().error(context, exception.code);
+        },
+        codeSent: (id,[token])     {
+          showDialog(context: context,
+          barrierDismissible: false,
+          builder: (context)=>AlertDialog(
+
+            title: Text("enter sms code"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: _smsCode,
+
+                ),
+
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Done"),
+                textColor: Colors.white,
+                color: Colors.redAccent,
+                onPressed: (){
+
+                  verificationcode= _smsCode.text.trim();
+                  var _credential = PhoneAuthProvider.getCredential(verificationId: id, smsCode: verificationcode);
+                 fireHelper().auth_instance.signInWithCredential(_credential).then((value) {
+                   setState(() {
+                     me.phone=_phoneNumber.text;
+                     fireHelper().ModifyUser({KeyPhone:_phoneNumber.text});
+
+                   });
+                  Navigator.pop(context);
+                 });
+                 
+                },
+              )
+            ],
+          )
+          );
+
+        },
+         codeAutoRetrievalTimeout:  (timeout){ });
+  }
 }
